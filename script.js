@@ -21,8 +21,8 @@ popup.addEventListener('click', function(event) {
 
 let PopupSaveClose = document.querySelector('.popup__save-button')
 let FormElement = document.querySelector('.popup__container')
-let ProfileName = document.querySelector('.profile__info_title')
-let ProfileJob = document.querySelector('.profile__info_subtitle')
+let ProfileName = document.querySelector('.profile__info-title')
+let ProfileJob = document.querySelector('.profile__info-subtitle')
 let NameInput = document.getElementById('name')
 let JobInput = document.getElementById('about')
 

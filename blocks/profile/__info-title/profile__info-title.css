@@ -1,4 +1,4 @@
-.profile__info_title {
+.profile__info-title {
     max-width: 294px;
     line-height: 48px;
     font-size: 42px;
@@ -11,10 +11,9 @@
 }
 
 @media screen and (max-width: 586px) {
-  .profile__info_title {
+  .profile__info-title {
     max-width: 189px;
     line-height: 33px;
     font-size: 27px;
      }
 }
-  
