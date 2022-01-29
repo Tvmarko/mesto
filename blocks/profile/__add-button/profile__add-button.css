@@ -2,20 +2,23 @@
     width: 150px;
     height: 50px;
     margin: 35px 0;
-    border: 2px solid #FFF;
-    border-radius: 2px;
-    background: none;
+    border: none;
+    background-image: url(../../../images/add-button.svg);
+    background-repeat: no-repeat;
+    background-color: transparent;
     padding: 0;
     cursor: pointer;
+    background-size: contain;
 }
 
 .profile__add-button:hover {
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 @media screen and (max-width: 586px) {
     .profile__add-button {
         width: 282px;
         margin: 0 auto;
+        background-image: url(../../../images/add-button-mobile.svg);
       }
 }
