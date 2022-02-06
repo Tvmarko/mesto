@@ -1,10 +1,10 @@
 const popupEdit = document.querySelector('.popup_edit')
 const popupAdd = document.querySelector('.popup_add')
-const openPopupButtonEdit = document.querySelector('.profile__edit-button')
-const openPopupButtonAdd = document.querySelector('.profile__add-button')
-const closePopupButtonEdit = document.querySelector('.popup__close-button_edit')
-const closePopupButtonAdd = document.querySelector('.popup__close-button_add')
-const closePhotoPopupButton = document.querySelector('.popup__close-button_photo')
+const popupOpenButtonEdit = document.querySelector('.profile__edit-button')
+const popupOpenButtonAdd = document.querySelector('.profile__add-button')
+const popupCloseButtonEdit = document.querySelector('.popup__close-button_edit')
+const popupCloseButtonAdd = document.querySelector('.popup__close-button_add')
+const popupClosePhotoButton = document.querySelector('.popup__close-button_photo')
 const formElement = document.querySelector('.popup__form')
 const profileName = document.querySelector('.profile__info-title')
 const profileJob = document.querySelector('.profile__info-subtitle')
@@ -15,9 +15,9 @@ const cards = document.querySelector('.elements')
 const formElementAdd = document.querySelector('.popup__form_add')
 const placeInput = document.getElementById('place')
 const imageInput = document.getElementById('image')
-const openPhotoPopup = document.querySelector('.popup_openImage')
-const openPhoto = document.querySelector('.popup__openphoto')
-const openPhotoCaption = document.querySelector('.popup__openphoto-caption')
+const popupPhoto = document.querySelector('.popup_openImage')
+const photo = document.querySelector('.popup__openphoto')
+const photoCaption = document.querySelector('.popup__openphoto-caption')
 
 // функция для открытия попапа
 function openPopup (popup) {
@@ -25,7 +25,7 @@ function openPopup (popup) {
 }
 
 // открытие попапа редактирования
-openPopupButtonEdit.addEventListener('click', function () {
+popupOpenButtonEdit.addEventListener('click', function () {
   openPopup(popupEdit); 
   // занесение данных в форму из профайла
   nameInput.value = profileName.textContent 
@@ -33,7 +33,7 @@ openPopupButtonEdit.addEventListener('click', function () {
 });
 
 // открытие попапа добавления
-openPopupButtonAdd.addEventListener('click', function () {
+popupOpenButtonAdd.addEventListener('click', function () {
   openPopup(popupAdd); 
 });
 
@@ -43,23 +43,23 @@ function closePopup(popup) {
 }
 
 // закрытие попапа редактирования
-closePopupButtonEdit.addEventListener('click', function () {
+popupCloseButtonEdit.addEventListener('click', function () {
   closePopup(popupEdit); 
 });
 
 // закрытие попапа добавления
-closePopupButtonAdd.addEventListener('click', function () {
+popupCloseButtonAdd.addEventListener('click', function () {
   closePopup(popupAdd); 
 });
 
 //закрытие попапа картинки
-closePhotoPopupButton.addEventListener('click', function () {
-  closePopup(openPhotoPopup); 
+popupClosePhotoButton.addEventListener('click', function () {
+  closePopup(popupPhoto); 
 });
 
 // сохранение в профайле данных, занесенных в форму
 // закрытие попапа при отправке 'submit'
-function formSubmitHandler(evt) {
+function handleFormSubmit(evt) {
     evt.preventDefault() 
     profileName.textContent = nameInput.value
     profileJob.textContent = jobInput.value
@@ -67,7 +67,7 @@ function formSubmitHandler(evt) {
 }
 
 // слушатель для отслеживания события 'submit'
-formElement.addEventListener('submit', formSubmitHandler)
+formElement.addEventListener('submit', handleFormSubmit)
 
 const initialCards = [
     {
@@ -141,10 +141,10 @@ const initialCards = [
 
   //открытие попапа картинки
   function openPopupImage(event) {
-    openPopup(openPhotoPopup)
-    openPhoto.src = event.target.src
-    openPhoto.alt = event.target.alt
-    openPhotoCaption.textContent = event.target.alt
+    openPopup(popupPhoto)
+    photo.src = event.target.src
+    photo.alt = event.target.alt
+    photoCaption.textContent = event.target.alt
   }
 
   
