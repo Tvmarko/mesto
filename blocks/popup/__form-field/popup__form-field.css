@@ -1,0 +1,6 @@
+.popup__form-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 36px 13px;
+}

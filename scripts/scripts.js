@@ -1,3 +1,5 @@
+const popup = document.querySelector('.popup')
+const closeOverlay = Array.from(document.querySelectorAll('.popup'));
 const popupEdit = document.querySelector('.popup_edit')
 const popupAdd = document.querySelector('.popup_add')
 const popupOpenButtonEdit = document.querySelector('.profile__edit-button')
@@ -6,13 +8,14 @@ const popupCloseButtonEdit = document.querySelector('.popup__close-button_edit')
 const popupCloseButtonAdd = document.querySelector('.popup__close-button_add')
 const popupClosePhotoButton = document.querySelector('.popup__close-button_photo')
 const formElement = document.querySelector('.popup__form')
+const formElementEdit = document.querySelector('.popup__form_edit')
+const formElementAdd = document.querySelector('.popup__form_add')
 const profileName = document.querySelector('.profile__info-title')
 const profileJob = document.querySelector('.profile__info-subtitle')
 const nameInput = document.getElementById('name')
 const jobInput = document.getElementById('about')
 const template = document.querySelector('.elements-template').content
 const cards = document.querySelector('.elements')
-const formElementAdd = document.querySelector('.popup__form_add')
 const placeInput = document.getElementById('place')
 const imageInput = document.getElementById('image')
 const popupPhoto = document.querySelector('.popup_openImage')
@@ -22,6 +25,7 @@ const photoCaption = document.querySelector('.popup__openphoto-caption')
 // функция для открытия попапа
 function openPopup (popup) {
   popup.classList.add('popup_opened')
+  enableValidation();
 }
 
 // открытие попапа редактирования
@@ -34,13 +38,13 @@ popupOpenButtonEdit.addEventListener('click', function () {
 
 // открытие попапа добавления
 popupOpenButtonAdd.addEventListener('click', function () {
-  openPopup(popupAdd); 
+  openPopup(popupAdd);
 });
 
 // функция для закрытия попапа
 function closePopup(popup) {
   popup.classList.remove('popup_opened')
-}
+};
 
 // закрытие попапа редактирования
 popupCloseButtonEdit.addEventListener('click', function () {
@@ -57,6 +61,21 @@ popupClosePhotoButton.addEventListener('click', function () {
   closePopup(popupPhoto); 
 });
 
+//закрытие всех попапов по оверлею и клавишей 
+closeOverlay.forEach((popup) => {
+popup.addEventListener('click', function(event) {
+  if(event.target === event.currentTarget) {
+      closePopup(popup)
+  } 
+})
+document.addEventListener('keydown', function(event) {
+  const key = event.key; 
+  if(key === 'Escape') {
+      closePopup(popup)
+    } 
+})
+})
+
 // сохранение в профайле данных, занесенных в форму
 // закрытие попапа при отправке 'submit'
 function handleFormSubmit(evt) {
@@ -64,10 +83,13 @@ function handleFormSubmit(evt) {
     profileName.textContent = nameInput.value
     profileJob.textContent = jobInput.value
     closePopup(popupEdit); 
-}
+    if(formElement.checkValidity()) {
+      evt.target.reset()
+    }
+  }
 
 // слушатель для отслеживания события 'submit'
-formElement.addEventListener('submit', handleFormSubmit)
+formElementEdit.addEventListener('submit', handleFormSubmit)
 
 const initialCards = [
     {
@@ -141,7 +163,7 @@ const initialCards = [
 
   //открытие попапа картинки
   function openPopupImage(event) {
-    openPopup(popupPhoto)
+    popupPhoto.classList.add('popup_opened')
     photo.src = event.target.src
     photo.alt = event.target.alt
     photoCaption.textContent = event.target.alt
