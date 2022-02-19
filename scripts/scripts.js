@@ -1,5 +1,5 @@
 const popup = document.querySelector('.popup')
-const closeOverlay = Array.from(document.querySelectorAll('.popup'));
+const popupCloseOverlay = Array.from(document.querySelectorAll('.popup'));
 const popupEdit = document.querySelector('.popup_edit')
 const popupAdd = document.querySelector('.popup_add')
 const popupOpenButtonEdit = document.querySelector('.profile__edit-button')
@@ -18,14 +18,13 @@ const template = document.querySelector('.elements-template').content
 const cards = document.querySelector('.elements')
 const placeInput = document.getElementById('place')
 const imageInput = document.getElementById('image')
-const popupPhoto = document.querySelector('.popup_openImage')
+const popupPhoto = document.querySelector('.popup_openimage')
 const photo = document.querySelector('.popup__openphoto')
 const photoCaption = document.querySelector('.popup__openphoto-caption')
 
 // функция для открытия попапа
 function openPopup (popup) {
   popup.classList.add('popup_opened')
-  enableValidation();
 }
 
 // открытие попапа редактирования
@@ -62,17 +61,17 @@ popupClosePhotoButton.addEventListener('click', function () {
 });
 
 //закрытие всех попапов по оверлею и клавишей 
-closeOverlay.forEach((popup) => {
+popupCloseOverlay.forEach((popup) => {
 popup.addEventListener('click', function(event) {
   if(event.target === event.currentTarget) {
-      closePopup(popup)
+    closePopup(popup)
   } 
 })
 document.addEventListener('keydown', function(event) {
   const key = event.key; 
   if(key === 'Escape') {
-      closePopup(popup)
-    } 
+    closePopup(popup)
+  } 
 })
 })
 
@@ -82,10 +81,8 @@ function handleFormSubmit(evt) {
     evt.preventDefault() 
     profileName.textContent = nameInput.value
     profileJob.textContent = jobInput.value
-    closePopup(popupEdit); 
-    if(formElement.checkValidity()) {
-      evt.target.reset()
-    }
+    closePopup(popupEdit);
+    evt.target.reset()
   }
 
 // слушатель для отслеживания события 'submit'
