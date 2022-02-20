@@ -1,30 +1,29 @@
 const popup = document.querySelector('.popup')
-const popupCloseOverlay = Array.from(document.querySelectorAll('.popup'));
+const popups = Array.from(document.querySelectorAll('.popup'));
 const popupEdit = document.querySelector('.popup_edit')
 const popupAdd = document.querySelector('.popup_add')
 const popupOpenButtonEdit = document.querySelector('.profile__edit-button')
 const popupOpenButtonAdd = document.querySelector('.profile__add-button')
-const popupCloseButtonEdit = document.querySelector('.popup__close-button_edit')
-const popupCloseButtonAdd = document.querySelector('.popup__close-button_add')
-const popupClosePhotoButton = document.querySelector('.popup__close-button_photo')
+const newCardButtonAdd = document.querySelector('.popup__save-button_add')
 const formElement = document.querySelector('.popup__form')
 const formElementEdit = document.querySelector('.popup__form_edit')
 const formElementAdd = document.querySelector('.popup__form_add')
 const profileName = document.querySelector('.profile__info-title')
 const profileJob = document.querySelector('.profile__info-subtitle')
-const nameInput = document.getElementById('name')
-const jobInput = document.getElementById('about')
+const nameInput = document.querySelector('.popup__input_name')
+const jobInput = document.querySelector('.popup__input_about')
 const template = document.querySelector('.elements-template').content
 const cards = document.querySelector('.elements')
-const placeInput = document.getElementById('place')
-const imageInput = document.getElementById('image')
+const placeInput = document.querySelector('.popup__input_place')
+const imageInput = document.querySelector('.popup__input_image')
 const popupPhoto = document.querySelector('.popup_openimage')
 const photo = document.querySelector('.popup__openphoto')
 const photoCaption = document.querySelector('.popup__openphoto-caption')
 
 // функция для открытия попапа
 function openPopup (popup) {
-  popup.classList.add('popup_opened')
+  popup.classList.add('popup_opened');
+  document.addEventListener('keydown', closeByEscape); 
 }
 
 // открытие попапа редактирования
@@ -38,42 +37,40 @@ popupOpenButtonEdit.addEventListener('click', function () {
 // открытие попапа добавления
 popupOpenButtonAdd.addEventListener('click', function () {
   openPopup(popupAdd);
+  disableButtonAdd ();
 });
 
 // функция для закрытия попапа
 function closePopup(popup) {
   popup.classList.remove('popup_opened')
+  document.removeEventListener('keydown', closeByEscape); 
 };
 
-// закрытие попапа редактирования
-popupCloseButtonEdit.addEventListener('click', function () {
-  closePopup(popupEdit); 
-});
-
-// закрытие попапа добавления
-popupCloseButtonAdd.addEventListener('click', function () {
-  closePopup(popupAdd); 
-});
-
-//закрытие попапа картинки
-popupClosePhotoButton.addEventListener('click', function () {
-  closePopup(popupPhoto); 
-});
-
-//закрытие всех попапов по оверлею и клавишей 
-popupCloseOverlay.forEach((popup) => {
-popup.addEventListener('click', function(event) {
-  if(event.target === event.currentTarget) {
-    closePopup(popup)
-  } 
+// закрытие попапов по оверлею и крестику
+popups.forEach((popup) => {
+  popup.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains('popup_opened')) {
+        closePopup(popup)
+   }
+    if (evt.target.classList.contains('popup__close-button')) {
+        closePopup(popup)
+   }
+  })
 })
-document.addEventListener('keydown', function(event) {
-  const key = event.key; 
-  if(key === 'Escape') {
-    closePopup(popup)
-  } 
-})
-})
+
+// закрытие попапов по клавише esc
+function closeByEscape(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened') 
+    closePopup(openedPopup)
+  }
+}
+
+// деактивация кнопки добавления
+function disableButtonAdd () {
+  newCardButtonAdd.setAttribute('disabled', true)
+  newCardButtonAdd.classList.add('popup__save-button_inactive')
+}
 
 // сохранение в профайле данных, занесенных в форму
 // закрытие попапа при отправке 'submit'
@@ -160,7 +157,7 @@ const initialCards = [
 
   //открытие попапа картинки
   function openPopupImage(event) {
-    popupPhoto.classList.add('popup_opened')
+    openPopup(popupPhoto)
     photo.src = event.target.src
     photo.alt = event.target.alt
     photoCaption.textContent = event.target.alt
