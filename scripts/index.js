@@ -7,7 +7,6 @@ const popupEdit = document.querySelector('.popup_edit')
 const popupAdd = document.querySelector('.popup_add')
 const popupOpenButtonEdit = document.querySelector('.profile__edit-button')
 const popupOpenButtonAdd = document.querySelector('.profile__add-button')
-const newCardButtonAdd = document.querySelector('.popup__save-button_add')
 const formElementEdit = popupEdit.querySelector('.popup__form_edit')
 const formElementAdd = popupAdd.querySelector('.popup__form_add')
 const profileName = document.querySelector('.profile__info-title')
@@ -47,8 +46,7 @@ popupOpenButtonEdit.addEventListener('click', function () {
 // открытие попапа добавления
 popupOpenButtonAdd.addEventListener('click', function () {
   openPopup(popupAdd);
-  disableButtonAdd();
-  addFormValidator.resetErrors();
+  addFormValidator.disableButton();
 });
 
 // функция для закрытия попапа
@@ -60,10 +58,7 @@ function closePopup(popup) {
 // закрытие попапов по оверлею и крестику
 popups.forEach((popup) => {
   popup.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('popup_opened')) {
-        closePopup(popup)
-   }
-    if (evt.target.classList.contains('popup__close-button')) {
+    if (evt.target.classList.contains('popup_opened') || evt.target.classList.contains('popup__close-button')) {
         closePopup(popup)
    }
   })
@@ -78,7 +73,7 @@ function closeByEscape(evt) {
 }
 
 // закрытие попапа редактирования и сохранение в профайле данных, занесенных в форму
-function handleFormSubmit(evt) {
+function handleEditFormSubmit(evt) {
     evt.preventDefault() 
     profileName.textContent = nameInput.value
     profileJob.textContent = jobInput.value
@@ -86,70 +81,64 @@ function handleFormSubmit(evt) {
 }
 
 // слушатель для отслеживания события 'submit'
-formElementEdit.addEventListener('submit', handleFormSubmit)
-
-// деактивация кнопки добавления
-function disableButtonAdd () {
-  newCardButtonAdd.setAttribute('disabled', true)
-  newCardButtonAdd.classList.add('popup__save-button_inactive')
-}
+formElementEdit.addEventListener('submit', handleEditFormSubmit)
 
 // валидация проверяемых форм
 editFormValidator.enableValidation();
 addFormValidator.enableValidation();
 
-//массив карточек
+// массив карточек
 const initialCards = [
   {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   },
   {
     name: 'Холмогорский район',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
   },
   {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
   }
 ]; 
 
-//отображение карточек
-initialCards.forEach((item) => {
-  const card = new Card(item, '.elements-template');
-  const cardElement = card.generateCard();
+// функция создания экземпляра карточки
+function createNewCard(item) {
+  const card = new Card(item, '.elements-template').generateCard();
+  cards.prepend(card);
+}
 
-  cards.append(cardElement);
+// отображение массива карточек
+initialCards.forEach((item) => {
+  createNewCard(item);
 });
 
 //добавление новой карточки
 function renderNewItem(item) {
   const newCard = {
-  name: placeInput.value, 
-  link: imageInput.value,
+    name: placeInput.value, 
+    link: imageInput.value,
   }
-  const card = new Card(newCard, '.elements-template');
-  const newCardElement = card.generateCard()
-
-  cards.prepend(newCardElement)
+  createNewCard(newCard);
 }
 
 // слушатель для отслеживания события 'submit'
 formElementAdd.addEventListener('submit', function (evt) {
-evt.preventDefault()
-renderNewItem()
-closePopup(popupAdd)
-evt.target.reset()
+  evt.preventDefault()
+  renderNewItem()
+  closePopup(popupAdd)
+  evt.target.reset()
 })

@@ -9,6 +9,7 @@
     background-repeat: no-repeat;
     background-color: transparent;
     background-size: contain;
+    justify-self: flex-end;
 }
 
 .profile__edit-button:hover {
