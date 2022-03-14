@@ -33,15 +33,15 @@ export class Card {
 
     this._elementLike.addEventListener('click', () => {
       this._toggleLike() 
-  });
+    });
     
     this._element.querySelector('.elements__element-delete').addEventListener('click', () => {
       this._deleteElement()
-  });
+    });
 
     this._element.querySelector('.elements__element-photo').addEventListener('click', () => {
       this._openPopupImage()
-  });
+    });
   }
      
   _toggleLike(){

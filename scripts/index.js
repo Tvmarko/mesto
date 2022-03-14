@@ -46,7 +46,7 @@ popupOpenButtonEdit.addEventListener('click', function () {
 // открытие попапа добавления
 popupOpenButtonAdd.addEventListener('click', function () {
   openPopup(popupAdd);
-  addFormValidator.disableButton();
+  addFormValidator.toggleButtonState();
 });
 
 // функция для закрытия попапа
