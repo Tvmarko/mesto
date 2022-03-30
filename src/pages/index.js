@@ -20,25 +20,25 @@ import { initialCards } from "../utils/constants.js";
 import './index.css';
 
 // валидация форм
-const editFormValidator = new FormValidator(validationConfig, formElementEdit);
-const addFormValidator = new FormValidator(validationConfig, formElementAdd);
+const profileFormValidator = new FormValidator(validationConfig, formElementEdit);
+const cardFormValidator = new FormValidator(validationConfig, formElementAdd);
 
-editFormValidator.enableValidation();
-addFormValidator.enableValidation();
+profileFormValidator.enableValidation();
+cardFormValidator.enableValidation();
 
 // открытие попапа редактирования
 popupOpenButtonEdit.addEventListener('click', function () {
-  popupProfileEdit.open();
-  editFormValidator.resetErrors();
   const {name, job} = userNewInfo.getUserInfo();
   nameInput.value = name; 
   jobInput.value = job;
+  popupProfileEdit.open();
 });
 
 // открытие попапа добавления
 popupOpenButtonAdd.addEventListener('click', function () {
+  cardFormValidator.toggleButtonState();
+  cardFormValidator.resetErrors();
   popupCardAdd.open();
-  addFormValidator.toggleButtonState();
 });
 
 // сохранение в профайле данных, занесенных в форму
@@ -48,11 +48,18 @@ const handleEditFormSubmit = (data) => {
     popupProfileEdit.close();
 }
 
+// созданиe карточки
+const createNewCard = (item) => {
+  const card = new Card(item, '.elements-template', () => {popupPhoto.open(item.link, item.name)});
+  return card.generateCard();
+}
+
 // отображение массива карточек
 const cardsList = new Section({
   items: initialCards,
   renderer: (item) => {
-    createNewCard(item);
+    const card = createNewCard(item);
+    cardsList.addItem(card);
   }
 },
 '.elements' 
@@ -60,19 +67,13 @@ const cardsList = new Section({
 
 cardsList.renderItems();
 
-// функция создания и добавления карточки
-function createNewCard (item) {
-  const card = new Card(item, '.elements-template', () => {popupPhoto.open(item.link, item.name)}).generateCard();
-  cardsList.addItem(card);
-}
-
 // добавление карточки из формы
 const handleCardFormSubmit = (data) => {
-  const userCard = {
+  const card = createNewCard ({
     name: data['place'], 
     link: data.link
-    }
-    createNewCard(userCard);
+    })
+    cardsList.addItem(card);
     popupCardAdd.close();
 }
 

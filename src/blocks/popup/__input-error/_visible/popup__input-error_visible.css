@@ -1,4 +1,6 @@
 .popup__input-error_visible {
     opacity: 1;
-    padding-top: 5px;
+    padding-top: 2px;
+    display: block;
+    height: 22px;
 }
