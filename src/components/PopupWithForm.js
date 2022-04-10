@@ -17,9 +17,18 @@ export class PopupWithForm extends Popup {
           return inputValues;
     } 
     
+    updateSubmitHandler(newSubmitHandler) {
+        this._handleFormSubmit = newSubmitHandler 
+    }
+
+    setButtonText(text) {
+        this._form.querySelector('.popup__save-button_confirm').textContent = text
+    }
+
     setEventListeners() {
         super.setEventListeners();
-        this._form.addEventListener('submit', () => {
+        this._form.addEventListener('submit', (evt) => {
+          evt.preventDefault()
           this._handleFormSubmit(this._getInputValues());
         });
       } 

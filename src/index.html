@@ -12,11 +12,16 @@
   <main class="content">
     <section class="profile">
       <div class="profile__info-container">
-        <img class="profile__avatar" src="<%=require('./images/profile-image.jpg')%>" alt="Аватар пользователя">
+        <div class="profile__avatar-container">
+          <img class="profile__avatar" src="<%=require('./images/аватар.svg')%>" alt="Аватар пользователя">
+          <div class="profile__avatar-overlay">
+            <button class="profile__avatar-button" type="button" aria-label="Edit"></button>
+          </div>
+        </div>
         <div class="profile__info">
-          <h1 class="profile__info-title">Жак-Ив Кусто</h1>
+          <h1 class="profile__info-title">:fr</h1>
           <button class="profile__edit-button" type="button" aria-label="Edit"></button>
-          <p class="profile__info-subtitle">Исследователь океана</p>
+          <p class="profile__info-subtitle">Xtkjdtr</p>
         </div>
       </div>  
       <button class="profile__add-button" type="button" aria-label="Add"></button>
@@ -38,6 +43,7 @@
       <div class="elements__element-place">
         <h3 class="elements__element-title"></h3>
         <button class="elements__element-like" type="button" aria-label="Like"></button>
+        <span class="elements__element-like-count"></span> 
       </div>
     </div>
   </template>
@@ -58,6 +64,19 @@
       <button class="popup__close-button popup__close-button_edit" type="button" aria-label="Close"></button>
     </div>
   </section>
+  <section class="popup popup_avatar">
+    <div class="popup__container popup__container_avatar">
+      <h3 class="popup__title">Обновить аватар</h3>
+      <form class="popup__form popup__form_avatar" name="Popup" novalidate>
+        <div class="popup__form-field">
+          <input class="popup__input popup__input_avatar" id="avatar" type="url" name="avatar" placeholder="Ссылка на аватар" required>
+          <span class="popup__input-error avatar-error"></span>
+        </div>
+        <button class="popup__save-button popup__save-button_avatar" type="submit">Сохранить</button>
+      </form>
+      <button class="popup__close-button popup__close-button_avatar" type="button" aria-label="Close"></button>
+    </div>
+  </section>
   <section class="popup popup_add">
     <div class="popup__container">
       <h3 class="popup__title">Новое место</h3>
@@ -73,6 +92,13 @@
         <button class="popup__save-button popup__save-button_add" type="submit">Создать</button>
       </form>
       <button class="popup__close-button popup__close-button_add" type="button" aria-label="Close"></button>
+    </div>
+  </section>
+  <section class="popup popup_confirm">
+    <div class="popup__container popup__container_confirm">
+      <h3 class="popup__title popup__title_confirm">Вы уверены?</h3>
+      <button class="popup__save-button popup__save-button_confirm" type="submit">Да</button>
+      <button class="popup__close-button popup__close-button_confirm" type="button" aria-label="Close"></button>
     </div>
   </section>
   <section class="popup popup_image">

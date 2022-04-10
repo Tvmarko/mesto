@@ -1,9 +1,16 @@
 export class Card {
-  constructor(data, cardSelector, handleCardClick) {
+  constructor(data, cardSelector, handleCardClick, handleDeleteClick, handleLikeClick) {
     this._name = data.name;
     this._link = data.link;
+    this._likes =  data.likes;
+    this._id = data.id;
+    this._userId = data.userId;
+    this._ownerId = data.ownerId;
+
     this._cardSelector = cardSelector;
     this._handleCardClick = handleCardClick.bind(this);
+    this._handleDeleteClick = handleDeleteClick.bind(this);
+    this._handleLikeClick = handleLikeClick.bind(this);
   }
   
   _getTemplate() {
@@ -16,6 +23,53 @@ export class Card {
       return cardElement;
   } 
     
+  _setEventListeners() {
+    this._elementLike = this._element.querySelector('.elements__element-like');
+
+    this._elementLike.addEventListener('click', () => {
+      this._handleLikeClick(this._id) 
+    });
+    
+    this._element.querySelector('.elements__element-delete').addEventListener('click', () => {
+      this._handleDeleteClick(this._id)
+    });
+
+    this._element.querySelector('.elements__element-photo').addEventListener('click', () => {
+      this._handleCardClick();
+    });
+  }
+     
+  _fillLike(){
+    this._elementLike.classList.add('elements__element-like_active');
+  }
+
+  _removeLike(){
+    this._elementLike.classList.remove('elements__element-like_active');
+  }
+  
+  deleteElement(){
+    this._element.remove();
+    this._element = null;
+  }
+
+  isLiked() {
+    const elementLikedByUser = this._likes.find(user => user._id === this._userId)
+    return elementLikedByUser;
+  }
+
+  setLikes(newLikes) {
+    this._likes = newLikes;
+
+    const elementLikeCount =  this._element.querySelector('.elements__element-like-count');
+    elementLikeCount.textContent = this._likes.length
+
+    if(this.isLiked()) {
+      this._fillLike()
+    } else {
+      this._removeLike()
+    }
+  }
+
   generateCard() {
     this._element = this._getTemplate();
     this._setEventListeners();
@@ -24,32 +78,13 @@ export class Card {
     this._element.querySelector('.elements__element-photo').alt = this._name;
     this._element.querySelector('.elements__element-title').textContent = this._name;
     
+    this.setLikes(this._likes)
+
+    if(this._ownerId !== this._userId) {
+      this._element.querySelector('.elements__element-delete').style.display = 'none'
+    }
+
     return this._element;
-  }
-
-  _setEventListeners() {
-    this._elementLike = this._element.querySelector('.elements__element-like');
-
-    this._elementLike.addEventListener('click', () => {
-      this._toggleLike() 
-    });
-    
-    this._element.querySelector('.elements__element-delete').addEventListener('click', () => {
-      this._deleteElement()
-    });
-
-    this._element.querySelector('.elements__element-photo').addEventListener('click', () => {
-      this._handleCardClick();
-    });
-  }
-     
-  _toggleLike(){
-    this._elementLike.classList.toggle('elements__element-like_active');
-  }
-      
-  _deleteElement(){
-    this._element.remove();
-    this._element = null;
   }
 }
 
