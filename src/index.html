@@ -13,7 +13,7 @@
     <section class="profile">
       <div class="profile__info-container">
         <div class="profile__avatar-container">
-          <img class="profile__avatar" src="<%=require('./images/аватар.svg')%>" alt="Аватар пользователя">
+          <img class="profile__avatar" src="#" alt="Аватар пользователя">
           <div class="profile__avatar-overlay">
             <button class="profile__avatar-button" type="button" aria-label="Edit"></button>
           </div>
@@ -97,7 +97,9 @@
   <section class="popup popup_confirm">
     <div class="popup__container popup__container_confirm">
       <h3 class="popup__title popup__title_confirm">Вы уверены?</h3>
-      <button class="popup__save-button popup__save-button_confirm" type="submit">Да</button>
+      <form class="popup__form popup__form_add" name="Popup"> 
+        <button class="popup__save-button popup__save-button_confirm" type="submit">Да</button>
+      </form>
       <button class="popup__close-button popup__close-button_confirm" type="button" aria-label="Close"></button>
     </div>
   </section>

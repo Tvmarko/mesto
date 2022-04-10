@@ -3,6 +3,7 @@ import { Card } from "../components/Card.js";
 import { Section } from "../components/Section.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
 import { PopupWithImage } from "../components/PopupWithImage.js";
+import { PopupWithConfirmation } from "../components/PopupWithConfirmation.js";
 import { UserInfo } from "../components/UserInfo.js";
 import { api } from "../components/Api.js";
 
@@ -57,29 +58,34 @@ let userId
 
 api.getProfileInfo()
   .then(res => {
-  userNewInfo.setUserInfo(res.name, res.about,res.avatar)
+  userNewInfo.setUserInfo(res.name, res.about)
+  userNewInfo.setUserAvatar(res.avatar)
 
   userId = res._id
 })
 
 // сохранение в профайле данных, занесенных в форму
 const handleEditFormSubmit = (data) => {
+  popupProfileEdit.setButtonText('Loading')
     const { name, profession } = data; 
     api.editProfile(name, profession)
       .then(res => {
         userNewInfo.setUserInfo(name, profession);
       })
-    popupProfileEdit.close();
-}
+  popupProfileEdit.close();
+  //popupProfileEdit.setButtonText('Сохранить')
+  }
 
 // обновление аватара
 const handleAvatarFormSubmit = (data) => {
+  popupAvatar.setButtonText('Loading')
   const avatar = data; 
   api.editAvatar(avatar)
     .then(res => {
-      userNewInfo.setUserInfo(avatar);
+      userNewInfo.setUserAvatar(avatar);
     })
     popupAvatar.close();
+    popupAvatar.setButtonText('Сохранить')
 }
 
 // созданиe карточки
@@ -92,8 +98,8 @@ const createNewCard = (item) => {
         api.deleteCard(id)
           .then(res => {
             card.deleteElement()
-            popupConfirm.setButtonText('Yes')
             popupConfirm.close()
+            popupConfirm.setButtonText('Да')
            })
       })
     },
@@ -142,6 +148,7 @@ api.getInitialCards()
 
 // добавление карточки из формы
 const handleCardFormSubmit = (data) => {
+  popupCardAdd.setButtonText('Loading')
   api.addCard(data['place'],data.link)
     .then(res => {
       const card = createNewCard ({
@@ -154,13 +161,14 @@ const handleCardFormSubmit = (data) => {
       })
     cardsList.addItem(card);
     popupCardAdd.close();
+    popupCardAdd.setButtonText('Создать');
   })
 }
 
 const popupPhoto = new PopupWithImage('.popup_image');
 const popupProfileEdit = new PopupWithForm('.popup_edit', handleEditFormSubmit);
 const popupCardAdd = new PopupWithForm('.popup_add', handleCardFormSubmit);
-const popupConfirm = new PopupWithForm('.popup_confirm');
+const popupConfirm = new PopupWithConfirmation('.popup_confirm');
 const popupAvatar = new PopupWithForm('.popup_avatar', handleAvatarFormSubmit);
 
 const userNewInfo = new UserInfo({profileNameSelector: '.profile__info-title', profileJobSelector: '.profile__info-subtitle', profileAvatarSelector: '.profile__avatar'})
