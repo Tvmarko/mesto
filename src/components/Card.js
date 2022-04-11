@@ -27,11 +27,11 @@ export class Card {
     this._elementLike = this._element.querySelector('.elements__element-like');
 
     this._elementLike.addEventListener('click', () => {
-      this._handleLikeClick(this._id) 
+      this._handleLikeClick(this._id); 
     });
     
     this._element.querySelector('.elements__element-delete').addEventListener('click', () => {
-      this._handleDeleteClick(this._id)
+      this._handleDeleteClick(this._id);
     });
 
     this._element.querySelector('.elements__element-photo').addEventListener('click', () => {
@@ -53,7 +53,7 @@ export class Card {
   }
 
   isLiked() {
-    const elementLikedByUser = this._likes.find(user => user._id === this._userId)
+    const elementLikedByUser = this._likes.find(user => user._id === this._userId);
     return elementLikedByUser;
   }
 
@@ -61,12 +61,12 @@ export class Card {
     this._likes = newLikes;
 
     const elementLikeCount =  this._element.querySelector('.elements__element-like-count');
-    elementLikeCount.textContent = this._likes.length
+    elementLikeCount.textContent = this._likes.length;
 
     if(this.isLiked()) {
-      this._fillLike()
+      this._fillLike();
     } else {
-      this._removeLike()
+      this._removeLike();
     }
   }
 
@@ -78,7 +78,7 @@ export class Card {
     this._element.querySelector('.elements__element-photo').alt = this._name;
     this._element.querySelector('.elements__element-title').textContent = this._name;
     
-    this.setLikes(this._likes)
+    this.setLikes(this._likes);
 
     if(this._ownerId !== this._userId) {
       this._element.querySelector('.elements__element-delete').style.display = 'none'

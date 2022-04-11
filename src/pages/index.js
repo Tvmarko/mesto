@@ -19,7 +19,6 @@ import {
   } from "../utils/constants.js";
 
 import { validationConfig } from "../utils/constants.js";
-//import { initialCards } from "../utils/constants.js";
 
 import './index.css';
 
@@ -49,57 +48,23 @@ popupOpenButtonAdd.addEventListener('click', function () {
 
 // открытие попапа для аватара
 popupOpenButtonAvatar.addEventListener('click', function () {
-  //avatarFormValidator.toggleButtonState();
-  //avatarFormValidator.resetErrors();
+  avatarFormValidator.toggleButtonState();
+  avatarFormValidator.resetErrors();
   popupAvatar.open();
 });
-
-let userId
-
-api.getProfileInfo()
-  .then(res => {
-  userNewInfo.setUserInfo(res.name, res.about)
-  userNewInfo.setUserAvatar(res.avatar)
-
-  userId = res._id
-})
-
-// сохранение в профайле данных, занесенных в форму
-const handleEditFormSubmit = (data) => {
-  popupProfileEdit.setButtonText('Loading')
-    const { name, profession } = data; 
-    api.editProfile(name, profession)
-      .then(res => {
-        userNewInfo.setUserInfo(name, profession);
-      })
-  popupProfileEdit.close();
-  //popupProfileEdit.setButtonText('Сохранить')
-  }
-
-// обновление аватара
-const handleAvatarFormSubmit = (data) => {
-  popupAvatar.setButtonText('Loading')
-  const avatar = data; 
-  api.editAvatar(avatar)
-    .then(res => {
-      userNewInfo.setUserAvatar(avatar);
-    })
-    popupAvatar.close();
-    popupAvatar.setButtonText('Сохранить')
-}
 
 // созданиe карточки
 const createNewCard = (item) => {
   const card = new Card(item, '.elements-template', () => {popupPhoto.open(item.link, item.name)},
     (id) => {
-      popupConfirm.open()
+      popupConfirm.open();
       popupConfirm.updateSubmitHandler(() => {
-        popupConfirm.setButtonText('Loading')
+        popupConfirm.setButtonText('Loading');
         api.deleteCard(id)
           .then(res => {
-            card.deleteElement()
-            popupConfirm.close()
-            popupConfirm.setButtonText('Да')
+            card.deleteElement();
+            popupConfirm.close();
+            popupConfirm.setButtonText('Да');
            })
       })
     },
@@ -107,12 +72,12 @@ const createNewCard = (item) => {
       if(card.isLiked()) {
         api.deleteLike(id)
         .then(res => {
-          card.setLikes(res.likes)
+          card.setLikes(res.likes);
         })
       } else {
         api.addLike(id)
         .then(res => {
-          card.setLikes(res.likes)
+          card.setLikes(res.likes);
         })
       }
     }
@@ -120,19 +85,28 @@ const createNewCard = (item) => {
   return card.generateCard();
 }
 
+function renderCards (item) {
+  const card = createNewCard(item);
+  cardsList.addItem(card);
+}
 // отображение массива карточек
 const cardsList = new Section({
   items: [],
   renderer: (item) => {
-    const card = createNewCard(item);
-    cardsList.addItem(card);
+    renderCards(item);
   }
 },
 '.elements' 
 ); 
 
-api.getInitialCards() 
-  .then(cardList => {
+let userId
+//загрузка информации с сервера
+Promise.all([api.getProfileInfo(), api.getInitialCards()])
+  .then(([res, cardList]) => {
+    userNewInfo.setUserInfo(res.name, res.about);
+    userNewInfo.setUserAvatar(res.avatar);
+    userId = res._id;
+
     cardList.forEach(data => {
       const card = createNewCard ({
         name: data.name, 
@@ -145,21 +119,43 @@ api.getInitialCards()
         cardsList.addItem(card);
     })
 })
+    
+// сохранение в профайле данных, занесенных в форму
+const handleEditFormSubmit = (data) => {
+  popupProfileEdit.setButtonText('Loading');
+    const { name, profession } = data; 
+    api.editProfile(name, profession)
+      .then(res => {
+        userNewInfo.setUserInfo(name, profession);
+      })
+    popupProfileEdit.close();
+    popupProfileEdit.setButtonText('Сохранить');
+}
+
+// обновление аватара
+const handleAvatarFormSubmit = (data) => {
+  popupAvatar.setButtonText('Loading');
+  api.editAvatar(avatar)
+    .then(res => {
+      userNewInfo.setUserAvatar(data.avatar);
+    })
+    popupAvatar.close();
+    popupAvatar.setButtonText('Сохранить');
+}
 
 // добавление карточки из формы
 const handleCardFormSubmit = (data) => {
-  popupCardAdd.setButtonText('Loading')
+  popupCardAdd.setButtonText('Loading');
   api.addCard(data['place'],data.link)
     .then(res => {
-      const card = createNewCard ({
+      renderCards ({
         name: res.name, 
         link: res.link,
         likes: res.likes,
         id: res._id,
         userId: userId,
         ownerId: res.owner._id
-      })
-    cardsList.addItem(card);
+      });
     popupCardAdd.close();
     popupCardAdd.setButtonText('Создать');
   })

@@ -33,7 +33,7 @@ class Api {
         .catch(console.log)
    }
 
-   editAvatar(avatar) {
+   editAvatar({avatar}) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: this._headers,
@@ -86,36 +86,7 @@ class Api {
   }
 }
    
-
-/*
-  createCard(){
-    return fetch('${this._baseUrl}/cards', {
-      method: 'POST', 
-      body: JSON.stringify({
-        name: item.name,
-        link: item.link}),
-      headers: this._headers
-    })
-      .then((res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-      .catch((err) => {
-        console.log(err);
-      })
-  } 
-    
-  deleteCard(id) {
-    return fetch('${this._baseUrl}/${id}', {
-      method: 'DELETE', 
-      headers: this._headers
-  })
-  .then((res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-  .catch((err) => {
-    console.log(err);
-  })
-} 
-}
-*/
-
-  export const api = new Api({
+export const api = new Api({
     baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-39',
     headers: {
       authorization: 'd47f770a-d44b-46ab-a4b8-15da85bd32ea',
