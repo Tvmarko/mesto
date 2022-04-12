@@ -25,6 +25,8 @@ export class Card {
     
   _setEventListeners() {
     this._elementLike = this._element.querySelector('.elements__element-like');
+    this._elementPhoto = this._element.querySelector('.elements__element-photo');
+    this._elementTitle =this._element.querySelector('.elements__element-title')
 
     this._elementLike.addEventListener('click', () => {
       this._handleLikeClick(this._id); 
@@ -74,9 +76,9 @@ export class Card {
     this._element = this._getTemplate();
     this._setEventListeners();
     
-    this._element.querySelector('.elements__element-photo').src = this._link;
-    this._element.querySelector('.elements__element-photo').alt = this._name;
-    this._element.querySelector('.elements__element-title').textContent = this._name;
+    this._elementPhoto.src = this._link;
+    this._elementPhoto.alt = this._name;
+    this._elementTitle.textContent = this._name;
     
     this.setLikes(this._likes);
 
