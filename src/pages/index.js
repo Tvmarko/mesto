@@ -99,7 +99,7 @@ const createNewCard = (item) => {
 
 // renderer
 function renderCards (item) {
-  const card = createNewCard(item);
+  const card = createNewCard({...item, userId });
   cardsList.addItem(card);
 }
 
@@ -120,16 +120,7 @@ Promise.all([api.getProfileInfo(), api.getInitialCards()])
     userNewInfo.setUserAvatar(res.avatar);
     userId = res._id;
 
-    items.forEach(data => {
-      renderCards ({
-        name: data.name, 
-        link: data.link,
-        likes: data.likes,
-        id: data._id,
-        userId: userId,
-        ownerId: data.owner._id
-      })
-    })
+    cardsList.renderItems(items)
   })
   .catch((err) => {
     console.log(err); 
