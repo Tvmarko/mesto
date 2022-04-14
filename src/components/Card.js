@@ -36,7 +36,7 @@ export class Card {
       this._handleDeleteClick(this._id);
     });
 
-    this._element.querySelector('.elements__element-photo').addEventListener('click', () => {
+    this._elementPhoto.addEventListener('click', () => {
       this._handleCardClick();
     });
   }
@@ -61,9 +61,8 @@ export class Card {
 
   setLikes(newLikes) {
     this._likes = newLikes;
-
-    const elementLikeCount =  this._element.querySelector('.elements__element-like-count');
-    elementLikeCount.textContent = this._likes.length;
+    this._elementLikeCount = this._element.querySelector('.elements__element-like-count');
+    this._elementLikeCount.textContent = this._likes.length;
 
     if(this.isLiked()) {
       this._fillLike();
