@@ -99,7 +99,8 @@ const createNewCard = (item) => {
 
 // renderer
 function renderCards (item) {
-  const card = createNewCard({...item, userId });
+  const card = createNewCard({...item, id: item._id, userId, ownerId: item.owner._id})
+
   cardsList.addItem(card);
 }
 
@@ -131,14 +132,7 @@ const handleCardFormSubmit = (data) => {
   popupCardAdd.setButtonText('Сохранение...');
   api.addCard(data['place'],data.link)
     .then(res => {
-      renderCards ({
-        name: res.name, 
-        link: res.link,
-        likes: res.likes,
-        id: res._id,
-        userId: userId,
-        ownerId: res.owner._id
-      })
+      renderCards (res)
       popupCardAdd.close();
     })
     .catch((err) => {
